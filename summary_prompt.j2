@@ -1,0 +1,160 @@
+Please summarize the news following the instructions below
+
+## Requirments
+
+1. In HTML format, no code block, no css, pure html.
+2. Write the summary in {{ preferred_lang }}
+3. Keep the politician names in the original language along with the position in both the original and translated language, e.g., Santiago Peña (Presidente 共和國總統)
+4. Keep organization names and other proprietaries in the original language along with the translation, e.g., Ministerio de la Mujer (婦女部)
+5. Do not translate the city names and country names.
+6. Use the html body template provided below to response.
+7. In the first section, list news by subject in order of importance.
+
+## Html body template
+
+<html>
+<body>
+    <h1>{{ current_date }} Paraguayan Politician News Highlights</h1>
+    <em>
+    <p> © CHUN WEI CHEN, Catopia de Chen Antúnez | Power by {{model}} </p>
+    </em>
+    <section group="brief-summary">
+        <h2>1. 本日新聞總結</h2>
+        <div>
+            <p>
+                今日巴拉圭政治新聞涵蓋了...
+                ...
+                總結今日巴拉圭政治新聞...
+            </p>
+        </div>
+        <div>
+            <!--
+            Showing the most frequently used words in the news,
+            e.g., 'corruption', 'government', 'politics', etc.
+            -->
+            <p>熱門關鍵字：...</p>
+        </div>
+        <div>
+            <ol>
+                <li>第一組新聞概要</li>
+                <li>第二組新聞概要</li>
+                <li>第三組新聞概要</li>
+                ...
+            </ol>
+        </div>
+    </section>
+    <section group="politician-highlight">
+        <!--
+        Summary of the news with sub-items grouped by related politician subjects.
+        -->
+        <h2>2. 重點政治人物</h2>
+        <div>
+            <h3>Pedro Alliana</h3>
+            <ul>
+                <li>
+                    <p>第一則相關新聞</p>
+                </li>
+                <li>
+                    <p>第二則相關新聞</p>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3>Tommy</h3>
+            <ul>
+                <li>
+                    <p>第一則相關新聞</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section group="network-graph">
+        <h2>3. Network Relationships</h2>
+        <div>
+            <h2>Nodes</h2>
+            <ul>
+                <li>Santiago Peña (共和國總統)</li>
+                <li>Pedro Alliana (共和國副總統)</li>
+                <li>Eduardo Nakayama（參議員）</li>
+                <li>Colorado Party（執政黨）</li>
+            </ul>
+        </div>
+        <div>
+            <h2>Edges</h2>
+            <ul>
+                <li>Alliana → 試圖罷免 Yd（敵對）</li>
+                <li>Nakayama ↔ Yd（支持）</li>
+            </ul>
+        </div>
+    </section>
+    <section group="event-time-line">
+        <h2>4. Event Timeline</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>事件摘要</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2023/10/01</td>
+                    <td>Alliana 提出罷免 Yd 的提案</td>
+                </tr>
+                <tr>
+                    <td>2024/10</td>
+                    <td>Nakayama 表示支持 Yd</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section group="ideological-spectrum-chart">
+        <!--
+        The first column should be the name of the politician or a politician party,
+        and mentioned topics starting from the second column,
+        comparing the positions of major political figures or parties on mentioned policy issues in the news.
+        -->
+        <h2>5. 意識形態光譜圖</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>政治人物/政黨</th>
+                    <th>自治支持</th>
+                    <th>環境責任</th>
+                    <th>選舉透明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pedro Alliana</td>
+                    <td>支持</td>
+                    <td>反對</td>
+                    <td>支持</td>
+                </tr>
+                <tr>
+                    <td>Santiago Peña</td>
+                    <td>反對</td>
+                    <td>被質疑</td>
+                    <td>支持</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <section group="references-in-apa-style">
+        <h2>6. 參考資料</h2>
+        <ul>
+            <!--
+            In APA format, including the original news articles only,
+            without any other references, showing the title, date, authors and URL.
+            -->
+            <li>新聞來源1</li>
+            <li>新聞來源2</li>
+            <li>新聞來源3</li>
+        </ul>
+    </section>
+</body>
+</html>
+
+## Today's news
+
+{{ content }}

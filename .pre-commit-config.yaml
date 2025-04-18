@@ -28,7 +28,6 @@ repos:
       - id: isort
         exclude: migrations/
         args:
-          - --line-length=150
           - --profile
           - black
 
@@ -38,7 +37,6 @@ repos:
     - id: black
       language_version: python3.13
       args:
-        - --line-length=150
         - --skip-string-normalization
 
   - repo: https://github.com/hadialqattan/pycln
