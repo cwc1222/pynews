@@ -1,0 +1,22 @@
+{
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "standard",
+    "python.analysis.diagnosticMode": "workspace",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+    },
+    "isort.check": true,
+    "isort.args":[
+        "--src=${workspaceFolder}",
+        "--profile",
+        "black"
+    ],
+    "black-formatter.args": [
+        "--skip-string-normalization"
+    ],
+
+}
