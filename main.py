@@ -90,7 +90,7 @@ def dispatch_summary():
 
 if __name__ == "__main__":
     Path(generated_folder).mkdir(parents=True, exist_ok=True)
-    # fetch_news()
+    fetch_news()
     print("News fetched successfully.")
     summarize_news()
     print("News summarized successfully.")
