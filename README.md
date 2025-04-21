@@ -1,38 +1,55 @@
-# sv
+# pynews
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Fetching Paraguayan news from La Nacion and ABC color, summarizing them using LLM via Openrouter, and sending it to subscribers.
 
-## Creating a project
+## Quickstart
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Run the python script sending news summarization to your email
 
-```bash
-# create a new project in the current directory
-npx sv create
+1. Create an .env file
 
-# create a new project in my-app
-npx sv create my-app
+```env
+
+# REF: https://openrouter.ai/docs/quickstart
+OPEN_ROUTER_API_KEY=""
+
+# REF: https://support.google.com/mail/answer/185833?hl=en
+GMAIL_APP_PASSWORD=""
+GMAIL_SENDER=""
+GMAIL_RECIPIENTS=""
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+uv run main.py
 ```
 
-## Building
-
-To create a production version of your app:
+### Host the subscription page locally or publish to cloudflare workers
 
 ```bash
-npm run build
+# bun upgrade
+bun install
+bun run dev
+bun run preview
+bun run deploy
 ```
 
-You can preview the production build with `npm run preview`.
+## Common commands
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+```bash
+uv init -p 3.13 .
+uv run main.py
+uv sync
+uv lock --upgrade
+
+pre-commit install
+pre-commit run --all-files
+pre-commit autoupdate
+```
+
+## Reference
+
+- [github.com/astral-sh/uv](https://github.com/astral-sh/uv)
+- [github.com/pre-commit/pre-commit](https://github.com/pre-commit/pre-commit)
+- [github.com/oven-sh/bun](https://github.com/oven-sh/bun)
+- [developers.cloudflare.com/workers](https://developers.cloudflare.com/workers/)
+- [svelte.dev/docs/kit/introduction](https://svelte.dev/docs/kit/introduction)
