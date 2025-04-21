@@ -1,35 +1,38 @@
-# pynews
+# sv
 
-Fetching Paraguayan news from La Nacion and ABC color, summarizing them using LLM via Openrouter, and sending it to subscribers.
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## Quickstart
+## Creating a project
 
-1. Create an .env file
-
-```env
-
-# REF: https://openrouter.ai/docs/quickstart
-OPEN_ROUTER_API_KEY=""
-
-# REF: https://support.google.com/mail/answer/185833?hl=en
-GMAIL_APP_PASSWORD=""
-GMAIL_SENDER=""
-GMAIL_RECIPIENTS=""
-```
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-uv run main.py
+# create a new project in the current directory
+npx sv create
+
+# create a new project in my-app
+npx sv create my-app
 ```
 
-## Common commands
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-uv init -p 3.13 .
-uv run main.py
-uv sync
-uv lock --upgrade
+npm run dev
 
-pre-commit install
-pre-commit run --all-files
-pre-commit autoupdate
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
