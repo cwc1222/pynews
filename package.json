@@ -40,8 +40,5 @@
 		"typescript-eslint": "^8.30.1",
 		"vite": "^6.3.2",
 		"wrangler": "^4.12.0"
-	},
-	"dependencies": {
-		"svelte-i18n": "^4.0.1"
 	}
 }
