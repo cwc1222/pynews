@@ -1,0 +1,17 @@
+{
+	"title": "Catopia de Chen Antúnez",
+	"subscribe": {
+		"heading": "Suscríbete a las Actualizaciones Diarias",
+		"emailLabel": "Correo Electrónico",
+		"emailPlaceholder": "Ingresa tu correo",
+		"button": "Suscribirse Ahora",
+		"buttonLoading": "Suscribiendo...",
+		"success": "¡Gracias por suscribirte! Por favor, revisa tu correo para confirmar tu suscripción.",
+		"description": "Recibe resúmenes diarios de las últimas noticias en tu bandeja de entrada"
+	},
+	"errors": {
+		"emailRequired": "Por favor, ingresa un correo electrónico",
+		"emailInvalid": "Por favor, ingresa un correo electrónico válido",
+		"generic": "Algo salió mal. Por favor, intenta de nuevo."
+	}
+}

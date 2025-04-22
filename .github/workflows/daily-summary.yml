@@ -14,7 +14,8 @@ jobs:
       OPEN_ROUTER_API_KEY: ${{ secrets.OPEN_ROUTER_API_KEY }}
       GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
-      GMAIL_RECIPIENTS: ${{ secrets.GMAIL_RECIPIENTS }}
+      PUBLIC_APP_URL: ${{ secrets.PUBLIC_APP_URL }}
+      API_TOKEN: ${{ secrets.API_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -32,6 +33,12 @@ jobs:
 
       - name: Install the project
         run: uv sync
+
+      - name: Fetch subscribers
+        id: fetch-subscribers
+        run: |
+          SUBSCRIBERS=$(curl -s -H "Authorization: Bearer ${{ env.API_TOKEN }}" "${{ env.PUBLIC_APP_URL }}/api/subscribers")
+          echo "GMAIL_RECIPIENTS=$SUBSCRIBERS" >> $GITHUB_ENV
 
       - name: Run script
         run: uv run main.py

@@ -1,2 +1,121 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import { _ } from 'svelte-i18n';
+	import { locale } from 'svelte-i18n';
+
+	let email = '';
+	let subscribed = false;
+	let error = '';
+	let loading = false;
+
+	const languages = [
+		{ code: 'en-US', name: 'English' },
+		{ code: 'es-PY', name: 'Español' },
+		{ code: 'zh-TW', name: '繁體中文' }
+	];
+
+	interface ApiResponse {
+		error?: string;
+		success?: boolean;
+	}
+
+	async function handleSubmit() {
+		if (!email) {
+			error = $_('errors.emailRequired');
+			return;
+		}
+
+		if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+			error = $_('errors.emailInvalid');
+			return;
+		}
+
+		loading = true;
+		error = '';
+
+		try {
+			const response = await fetch('/api/subscribe', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email })
+			});
+
+			const data = (await response.json()) as ApiResponse;
+
+			if (!response.ok) {
+				throw new Error(data.error || $_('errors.generic'));
+			}
+
+			subscribed = true;
+		} catch (err) {
+			error = err instanceof Error ? err.message : $_('errors.generic');
+		} finally {
+			loading = false;
+		}
+	}
+</script>
+
+<div class="flex min-h-screen flex-col items-center justify-center bg-gray-900 p-4 text-white">
+	<div class="absolute top-4 right-4">
+		<select
+			bind:value={$locale}
+			class="rounded-md border border-gray-700 bg-gray-800 px-3 py-1 text-white"
+		>
+			{#each languages as lang}
+				<option value={lang.code}>{lang.name}</option>
+			{/each}
+		</select>
+	</div>
+
+	<div class="flex flex-col items-center">
+		<img
+			src="/logo.webp"
+			alt="Logo"
+			class="mb-4 h-32 w-32 rounded-full border-4 border-gray-200 object-contain"
+		/>
+		<h1 class="mb-8 text-2xl font-bold text-white">{$_('title')}</h1>
+	</div>
+
+	<div class="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-md">
+		<h1 class="mb-6 text-center text-2xl font-bold">
+			{$_('subscribe.heading')}
+		</h1>
+
+		{#if subscribed}
+			<div class="mb-4 text-center text-green-400">
+				{$_('subscribe.success')}
+			</div>
+		{:else}
+			<form on:submit|preventDefault={handleSubmit} class="space-y-4">
+				<div>
+					<label for="email" class="mb-1 block text-sm font-medium text-gray-300">
+						{$_('subscribe.emailLabel')}
+					</label>
+					<input
+						type="email"
+						id="email"
+						bind:value={email}
+						placeholder={$_('subscribe.emailPlaceholder')}
+						class="w-full rounded-md border bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+						disabled={loading}
+					/>
+				</div>
+
+				{#if error}
+					<div class="text-sm text-red-400">{error}</div>
+				{/if}
+
+				<button
+					type="submit"
+					class="w-full rounded-md bg-blue-600 px-4 py-2 text-white transition duration-200 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+					disabled={loading}
+				>
+					{loading ? $_('subscribe.buttonLoading') : $_('subscribe.button')}
+				</button>
+			</form>
+		{/if}
+
+		<p class="mt-4 text-center text-sm text-gray-400">
+			{$_('subscribe.description')}
+		</p>
+	</div>
+</div>

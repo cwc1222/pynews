@@ -1,7 +1,17 @@
 <script lang="ts">
 	import '../app.css';
+	import { waitLocale } from 'svelte-i18n';
+	import { onMount } from 'svelte';
+	import '../lib/i18n';
 
-	let { children } = $props();
+	let ready = false;
+
+	onMount(async () => {
+		await waitLocale();
+		ready = true;
+	});
 </script>
 
-{@render children()}
+{#if ready}
+	<slot />
+{/if}
