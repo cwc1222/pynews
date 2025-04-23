@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { t, locale, getAvailableLocales } from '$lib/i18n';
+	import { t, locale } from '$lib/i18n';
 
 	let email = '';
 	let subscribed = false;
 	let error = '';
 	let loading = false;
-
-	const languages = getAvailableLocales();
 
 	interface ApiResponse {
 		error?: string;
@@ -50,17 +48,6 @@
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-gray-900 p-4 text-white">
-	<div class="absolute top-4 right-4">
-		<select
-			bind:value={$locale}
-			class="rounded-md border border-gray-700 bg-gray-800 px-3 py-1 text-white"
-		>
-			{#each languages as lang}
-				<option value={lang.code}>{lang.name}</option>
-			{/each}
-		</select>
-	</div>
-
 	<div class="flex flex-col items-center">
 		<img
 			src="/logo.webp"
