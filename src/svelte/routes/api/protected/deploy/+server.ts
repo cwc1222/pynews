@@ -1,7 +1,9 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+/** @type {import('@sveltejs/kit').RequestHandler} */
 export const POST: RequestHandler = async ({ request, platform }) => {
+	/*
 	try {
 		const token = request.headers.get('x-deploy-hook');
 
@@ -20,4 +22,6 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		console.error('Failed to process deploy hook:', error);
 		return json({ error: 'Failed to process deploy hook' }, { status: 500 });
 	}
+	*/
+	return json({ success: true });
 };

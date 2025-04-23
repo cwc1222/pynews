@@ -1,7 +1,13 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ url, platform }) => {
+export const POST: RequestHandler = async (context) => {
+	const { url, platform } = context;
+	if (!platform) {
+		return json({ error: 'Platform not available' }, { status: 500 });
+	}
+	//platform.env.DB;
+	/*
 	try {
 		const token = url.searchParams.get('token');
 		const email = url.searchParams.get('email');
@@ -33,4 +39,6 @@ export const POST: RequestHandler = async ({ url, platform }) => {
 		console.error('Confirmation error:', error);
 		return json({ error: 'Failed to confirm subscription' }, { status: 500 });
 	}
+	*/
+	return json({ success: true });
 };

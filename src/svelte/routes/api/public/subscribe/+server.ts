@@ -7,6 +7,7 @@ interface SubscribeRequest {
 }
 
 export const POST: RequestHandler = async ({ request, platform }) => {
+	const env = platform?.env as Env;
 	try {
 		const data = (await request.json()) as SubscribeRequest;
 		const { email } = data;
@@ -15,12 +16,12 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 			return json({ error: 'Invalid email address' }, { status: 400 });
 		}
 
-		if (!platform?.env?.DB) {
+		if (!env.DB) {
 			throw new Error('Database not available');
 		}
 
 		// Check if email already exists
-		const existing = await platform.env.DB.prepare('SELECT email FROM subscribers WHERE email = ?')
+		const existing = await env.DB.prepare('SELECT email FROM subscribers WHERE email = ?')
 			.bind(email)
 			.first<{ email: string }>();
 
@@ -31,13 +32,12 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		const confirmationToken = generateToken();
 
 		// Insert new subscriber
-		await platform.env.DB.prepare(
-			'INSERT INTO subscribers (email, confirmation_token) VALUES (?, ?)'
-		)
+		await env.DB.prepare('INSERT INTO subscribers (email, confirmation_token) VALUES (?, ?)')
 			.bind(email, confirmationToken)
 			.run();
 
-		await sendConfirmationEmail(email, confirmationToken, platform);
+		const workerUrl = new URL(request.url);
+		await sendConfirmationEmail(email, confirmationToken, workerUrl);
 
 		return json({ success: true });
 	} catch (error) {

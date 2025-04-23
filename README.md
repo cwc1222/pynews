@@ -33,6 +33,27 @@ bun run preview
 bun run deploy
 ```
 
+## Debug in vscode
+
+```bash
+# REF: https://stackoverflow.com/questions/75537379/how-to-debug-server-side-code-in-sveltekit-using-visual-studio-code
+
+# 1. start the vite server
+bun run dev
+# 2. In Visual Studio Code command palette
+#    choose Debug: Attach to node process,
+#    which will automatically show the list
+#    of running Node.js processes on your local computer
+# 3. Pick the node process, and start debugging!
+```
+
+```bash
+# 1. start the wrangler server
+bun run preview
+# 2. Use the wrangler debugger
+# 3. Only compiled code can have breakpoints using "debugger" keyword
+```
+
 ## Common commands
 
 ```bash

@@ -2,6 +2,8 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const DELETE: RequestHandler = async ({ url, platform }) => {
+	return json({ success: true });
+	/*
 	try {
 		const token = url.searchParams.get('token');
 		const email = url.searchParams.get('email');
@@ -30,4 +32,5 @@ export const DELETE: RequestHandler = async ({ url, platform }) => {
 		console.error('Unsubscribe error:', error);
 		return json({ error: 'Failed to unsubscribe' }, { status: 500 });
 	}
+	*/
 };

@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url, platform }) => {
+	/*
 	try {
 		const token = url.searchParams.get('token');
 
@@ -20,4 +21,6 @@ export const GET: RequestHandler = async ({ url, platform }) => {
 		console.error('Failed to fetch subscribers:', error);
 		return json({ error: 'Failed to fetch subscribers' }, { status: 500 });
 	}
+	*/
+	return json({ success: true });
 };
