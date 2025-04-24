@@ -5,18 +5,18 @@
 
 	const languages = getAvailableLocales();
 	const LANGUAGE_KEY = 'preferred-language';
-	
+
 	// Map browser language codes to our locale codes
 	const browserLangMap: Record<string, Locale> = {
-		'en': 'en-US',
-		'es': 'es-PY',
-		'zh': 'zh-TW'
+		en: 'en-US',
+		es: 'es-PY',
+		zh: 'zh-TW'
 	};
 
 	// Initialize language preference
 	if (typeof window !== 'undefined') {
 		const cachedLanguage = localStorage.getItem(LANGUAGE_KEY) as Locale | null;
-		
+
 		if (cachedLanguage && Object.values(browserLangMap).includes(cachedLanguage)) {
 			locale.set(cachedLanguage);
 		} else {

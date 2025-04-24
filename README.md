@@ -65,6 +65,12 @@ uv lock --upgrade
 pre-commit install
 pre-commit run --all-files
 pre-commit autoupdate
+
+# Local d1 query
+bunx wrangler d1 migrations list pynews
+bunx wrangler d1 migrations apply pynews
+bunx wrangler d1 execute pynews --command "select * from d1_migrations"
+bunx wrangler d1 execute pynews --command "select * from subscribers"
 ```
 
 ## Reference
