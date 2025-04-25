@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"preview": "npm run build && wrangler dev",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "wrangler types && mv worker-configuration.d.ts src/svelte && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check": "wrangler types && mv worker-configuration.d.ts src/svelte && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && prettier --write .",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
