@@ -80,3 +80,4 @@ bunx wrangler d1 execute pynews --command "select * from subscribers"
 - [github.com/oven-sh/bun](https://github.com/oven-sh/bun)
 - [developers.cloudflare.com/workers](https://developers.cloudflare.com/workers/)
 - [svelte.dev/docs/kit/introduction](https://svelte.dev/docs/kit/introduction)
+- [12 things I learned about hosting serverless sites on Cloudflare](https://dev.to/tylerlwsmith/12-things-i-learned-about-hosting-serverless-sites-on-cloudflare-2dml)
