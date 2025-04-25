@@ -1,6 +1,7 @@
 import datetime
 import json
 import re
+import urllib.parse
 from dataclasses import dataclass
 
 import requests
@@ -12,6 +13,7 @@ from src.python.newsfetcher.newsfetcher import News, NewsFetcher
 @dataclass
 class QueryABCColor:
     arc_site: str
+    excludedSections: str
     id: str
     limit: str
     offset: str
@@ -75,13 +77,14 @@ class ABCColorNewsFetcher(NewsFetcher):
         query_params = QueryParams(
             query=QueryABCColor(
                 arc_site="abccolor",
-                id="/politica",
+                excludedSections="",
+                id="/policiales",
                 limit="10",
                 offset="0",
                 sort="display_date:desc",
-                uri="/politica/",
+                uri="/policiales/",
             ),
-            d=2188,
+            d=2194,
             mxId=00000000,
             _website="abccolor",
         )
@@ -118,4 +121,7 @@ class ABCColorNewsFetcher(NewsFetcher):
             return []
         except Exception as e:
             print(f"Other error occurred: {e}")
+            print(
+                f"{self.base_url}{self.api_path}?{urllib.parse.urlencode(query_params.to_dict())}"
+            )
             return []
