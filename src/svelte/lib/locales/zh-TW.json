@@ -1,0 +1,17 @@
+{
+	"title": "Catopia de Chen Antúnez",
+	"subscribe": {
+		"heading": "訂閱每日新聞更新",
+		"emailLabel": "電子郵件",
+		"emailPlaceholder": "請輸入您的電子郵件",
+		"button": "立即訂閱",
+		"buttonLoading": "訂閱中...",
+		"success": "感謝您的訂閱！請查看您的電子郵件以確認訂閱。",
+		"description": "每日最新新聞摘要將發送至您的收件匣"
+	},
+	"errors": {
+		"emailRequired": "請輸入電子郵件地址",
+		"emailInvalid": "請輸入有效的電子郵件地址",
+		"generic": "發生錯誤，請重試。"
+	}
+}

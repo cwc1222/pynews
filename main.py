@@ -46,7 +46,14 @@ summarizer = Summarizer(
 )
 
 
-def fetch_news():
+def fetch_news() -> None:
+    """
+    Fetches news from the configured news sources and saves the result as a JSON file.
+
+    Iterates through the configured news fetchers, fetches news from each source,
+    and stores the results in a list of FetchedNews objects. Each FetchedNews object
+    contains the provider name and a list of news items in dictionary format.
+    """
     fetched: list[FetchedNews] = [
         FetchedNews(
             provider=fetcher.provider,
@@ -58,7 +65,13 @@ def fetch_news():
         json.dump([asdict(item) for item in fetched], f, ensure_ascii=False, indent=4)
 
 
-def summarize_news():
+def summarize_news() -> None:
+    """
+    Summarizes the news fetched from the sources and saves the result as an HTML file.
+
+    Reads the news data from the JSON file and passes it to the summarizer.
+    The summarized result is then written to an HTML file.
+    """
     summarized = ""
     with open(f"{generated_folder}/news.json", encoding="utf-8") as f:
         news = f.read()
@@ -67,8 +80,16 @@ def summarize_news():
         f.write(summarized)
 
 
-def dispatch_summary():
+def dispatch_summary() -> None:
+    """
+    Dispatches the generated news summary via email.
 
+    Reads the summary from the generated HTML file and sends it as an HTML email
+    using Gmail SMTP. The email is sent from the configured sender address to the
+    configured recipient list, with the subject containing the current date.
+
+    Uses Gmail app password authentication for sending the email securely.
+    """
     summary = ""
     with open(f"{generated_folder}/summary.html", encoding="utf-8") as f:
         summary = f.read()

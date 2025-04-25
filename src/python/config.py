@@ -26,10 +26,10 @@ def get_config() -> Config:
     GMAIL_RECIPIENTS = os.getenv("GMAIL_RECIPIENTS")
     if GMAIL_RECIPIENTS is None:
         raise ValueError("GMAIL_RECIPIENTS not set in .env file")
-    GMAIL_RECIPIENTS = GMAIL_RECIPIENTS.split(",")
+    recipients_list = GMAIL_RECIPIENTS.split(",")
     return Config(
         OPEN_ROUTER_API_KEY=OPEN_ROUTER_API_KEY,
         GMAIL_APP_PASSWORD=GMAIL_APP_PASSWORD,
         GMAIL_SENDER=GMAIL_SENDER,
-        GMAIL_RECIPIENTS=GMAIL_RECIPIENTS,
+        GMAIL_RECIPIENTS=recipients_list,
     )

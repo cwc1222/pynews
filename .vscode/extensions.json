@@ -1,0 +1,21 @@
+{
+	"recommendations": [
+		"ms-python.black-formatter",
+		"ms-python.isort",
+		"ms-python.mypy-type-checker",
+		"ms-python.vscode-pylance",
+		"ms-python.python",
+		"ms-python.debugpy",
+		"KevinRose.vsc-python-indent",
+		"samuelcolvin.jinjahtml",
+
+		"svelte.svelte-vscode",
+		"bradlc.vscode-tailwindcss",
+
+		"github.vscode-github-actions",
+		"IronGeek.vscode-env",
+		"tamasfe.even-better-toml",
+		"mhutchie.git-graph",
+		"rogalmic.bash-debug"
+	]
+}
