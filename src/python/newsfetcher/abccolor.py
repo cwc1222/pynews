@@ -84,7 +84,7 @@ class ABCColorNewsFetcher(NewsFetcher):
                 sort="display_date:desc",
                 uri="/policiales/",
             ),
-            d=2194,
+            d=2197,
             mxId=00000000,
             _website="abccolor",
         )
