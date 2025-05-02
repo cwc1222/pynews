@@ -1,7 +1,7 @@
 import datetime
 
-import requests
 from jinja2 import BaseLoader, Environment
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 from src.python.httpclient import HttpClient
 
@@ -33,7 +33,15 @@ class Summarizer:
             return prompt
 
     def summarize(self, content: str) -> str:
-        try:
+        @retry(
+            stop=stop_after_attempt(3),
+            wait=wait_exponential(multiplier=1, min=4, max=15),
+            before=lambda retry_state: print(
+                f"Retrying... {retry_state.attempt_number}"
+            ),
+            reraise=True,
+        )
+        def _summarize_with_retry():
             resp = self.http_client.post(
                 self.url,
                 data={
@@ -49,10 +57,22 @@ class Summarizer:
                 headers={
                     "Authorization": f"Bearer {self.api_token}",
                     "Content-Type": "application/json",
+                    "HTTP-Referer": "https://pynews.chenantunez.com",
+                    "X-Title": "pynews",
                 },
             ).json()
+            if (
+                "error" in resp
+                and "code" in resp["error"]
+                and resp["error"]["code"] == 429
+            ):
+                raise Exception(f"Open Router rate limit exceeded: {resp}")
+            if "choices" not in resp:
+                raise Exception(f"No choices found in response: {resp}")
+            if len(resp["choices"]) == 0:
+                raise Exception(f"Choices are empty in response: {resp}")
+            if "text" not in resp["choices"][0]:
+                raise Exception(f"Text is not present in response.Choices: {resp}")
             return resp["choices"][0]["text"]
-        except requests.HTTPError as e:
-            return f"HTTP error occurred: [{e.response.status_code}] {e.response.text}"
-        except Exception as e:
-            return f"Other error occurred: {e}"
+
+        return _summarize_with_retry()

@@ -88,40 +88,27 @@ class ABCColorNewsFetcher(NewsFetcher):
             mxId=00000000,
             _website="abccolor",
         )
-        try:
-            resp = self.http_client.get(
-                f"{self.base_url}{self.api_path}", params=query_params.to_dict()
+        resp = self.http_client.get(
+            f"{self.base_url}{self.api_path}", params=query_params.to_dict()
+        )
+        json = resp.json()
+        return [
+            News(
+                headLine=item["headlines"]["basic"],
+                subHeadLine=item["subheadlines"]["basic"],
+                publishedDate=self.parse_display_date(item["publish_date"]),
+                type=item["type"],
+                url=f"{self.base_url}{item["website_url"]}",
+                author=", ".join(
+                    [self.clean_author(str(a["name"])) for a in item["credits"]["by"]]
+                ),
+                content="\n".join(
+                    [
+                        c["content"]
+                        for c in list(item["content_elements"])
+                        if c["type"] == "text"
+                    ]
+                ),
             )
-            json = resp.json()
-            return [
-                News(
-                    headLine=item["headlines"]["basic"],
-                    subHeadLine=item["subheadlines"]["basic"],
-                    publishedDate=self.parse_display_date(item["publish_date"]),
-                    type=item["type"],
-                    url=f"{self.base_url}{item["website_url"]}",
-                    author=", ".join(
-                        [
-                            self.clean_author(str(a["name"]))
-                            for a in item["credits"]["by"]
-                        ]
-                    ),
-                    content="\n".join(
-                        [
-                            c["content"]
-                            for c in list(item["content_elements"])
-                            if c["type"] == "text"
-                        ]
-                    ),
-                )
-                for item in list(json["content_elements"])
-            ]
-        except requests.HTTPError as e:
-            print(f"HTTP error occurred: [{e.response.status_code}] {e.response.text}")
-            return []
-        except Exception as e:
-            print(f"Other error occurred: {e}")
-            print(
-                f"{self.base_url}{self.api_path}?{urllib.parse.urlencode(query_params.to_dict())}"
-            )
-            return []
+            for item in list(json["content_elements"])
+        ]

@@ -46,7 +46,7 @@ summarizer = Summarizer(
 )
 
 
-def fetch_news():
+def fetch_news() -> None:
     fetched: list[FetchedNews] = [
         FetchedNews(
             provider=fetcher.provider,
@@ -58,7 +58,7 @@ def fetch_news():
         json.dump([asdict(item) for item in fetched], f, ensure_ascii=False, indent=4)
 
 
-def summarize_news():
+def summarize_news() -> None:
     summarized = ""
     with open(f"{generated_folder}/news.json", encoding="utf-8") as f:
         news = f.read()
@@ -67,7 +67,7 @@ def summarize_news():
         f.write(summarized)
 
 
-def dispatch_summary():
+def dispatch_summary() -> None:
 
     summary = ""
     with open(f"{generated_folder}/summary.html", encoding="utf-8") as f:
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     print("News fetched successfully.")
     summarize_news()
     print("News summarized successfully.")
-    dispatch_summary()
+    # dispatch_summary()
     print("Summary dispatched successfully.")

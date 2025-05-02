@@ -51,10 +51,10 @@ class LaNacionNewsFetcher(NewsFetcher):
             if not isinstance(article, Tag):
                 raise Exception("Article body not found")
             paragraphs = article.find_all("p", class_="paragraph")
-            paragraphs = [
+            filtered_paragraphs = [
                 p for p in paragraphs if isinstance(p, Tag) and not p.find("a")
             ]
-            return "\n".join([p.get_text() for p in paragraphs])
+            return "\n".join([p.get_text() for p in filtered_paragraphs])
         except requests.HTTPError as e:
             return f"HTTP error occurred: [{e.response.status_code}] {e.response.text}"
         except Exception as e:
@@ -79,26 +79,19 @@ class LaNacionNewsFetcher(NewsFetcher):
             d=675,
             _website="lanacionpy",
         )
-        try:
-            resp = self.http_client.get(
-                f"{self.base_url}{self.api_path}", params=query_params.to_dict()
+        resp = self.http_client.get(
+            f"{self.base_url}{self.api_path}", params=query_params.to_dict()
+        )
+        json = resp.json()
+        return [
+            News(
+                headLine=item["headlines"]["basic"],
+                subHeadLine=item["description"]["basic"],
+                publishedDate=self.parse_display_date(item["display_date"]),
+                type="story",
+                url=f"{self.base_url}{item["canonical_url"]}",
+                author=", ".join([str(a["name"]) for a in item["credits"]["by"]]),
+                content=self.fetch_news_content(item["canonical_url"]),
             )
-            json = resp.json()
-            return [
-                News(
-                    headLine=item["headlines"]["basic"],
-                    subHeadLine=item["description"]["basic"],
-                    publishedDate=self.parse_display_date(item["display_date"]),
-                    type="story",
-                    url=f"{self.base_url}{item["canonical_url"]}",
-                    author=", ".join([str(a["name"]) for a in item["credits"]["by"]]),
-                    content=self.fetch_news_content(item["canonical_url"]),
-                )
-                for item in json["content_elements"]
-            ]
-        except requests.HTTPError as e:
-            print(f"HTTP error occurred: [{e.response.status_code}] {e.response.text}")
-            return []
-        except Exception as e:
-            print(f"Other error occurred: {e}")
-            return []
+            for item in json["content_elements"]
+        ]
