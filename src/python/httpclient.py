@@ -17,8 +17,10 @@ class HttpClient:
         @retry(
             stop=stop_after_attempt(3),
             wait=wait_exponential(multiplier=1, min=4, max=15),
-            before=lambda retry_state: print(
-                f"Retrying... {retry_state.attempt_number}"
+            before=lambda retry_state: (
+                print(f"Retrying {url}... {retry_state.attempt_number}")
+                if retry_state.attempt_number > 1
+                else None
             ),
             reraise=True,
         )
@@ -46,8 +48,10 @@ class HttpClient:
         @retry(
             stop=stop_after_attempt(3),
             wait=wait_exponential(multiplier=1, min=4, max=15),
-            before=lambda retry_state: print(
-                f"Retrying... {retry_state.attempt_number}"
+            before=lambda retry_state: (
+                print(f"Retrying {url}... {retry_state.attempt_number}")
+                if retry_state.attempt_number > 1
+                else None
             ),
             reraise=True,
         )
