@@ -1,7 +1,7 @@
 import datetime
 
 from jinja2 import BaseLoader, Environment
-from tenacity import retry, stop_after_attempt, wait_exponential
+from tenacity import RetryError, Retrying, retry, stop_after_attempt, wait_exponential
 
 from src.python.httpclient import HttpClient
 
@@ -14,41 +14,35 @@ class Summarizer:
         preferred_lang: str = "traditional chinese",
     ) -> None:
         self.url = "https://openrouter.ai/api/v1/completions"
-        self.model = "google/gemini-2.0-flash-exp:free"
+        self.models = [
+            "google/gemini-2.0-flash-exp:free",
+            "deepseek/deepseek-r1:free",
+            "google/gemma-3-27b-it:free",
+        ]
         self.api_token = api_token
         self.http_client = http_client
         self.preferred_lang = preferred_lang
 
-    def prompt(self, content: str) -> str:
+    def prompt(self, content: str, selected_model: str) -> str:
         with open("summary_prompt.j2", encoding="utf-8") as f:
             template = Environment(loader=BaseLoader()).from_string(f.read())
             prompt = template.render(
                 {
                     "preferred_lang": self.preferred_lang,
                     "current_date": datetime.datetime.now().strftime("%Y-%m-%d"),
-                    "model": f"Open Router - {self.model}",
+                    "model": f"Open Router - {selected_model}",
                     "content": content,
                 }
             )
             return prompt
 
     def summarize(self, content: str) -> str:
-        @retry(
-            stop=stop_after_attempt(3),
-            wait=wait_exponential(multiplier=1, min=4, max=15),
-            before=lambda retry_state: (
-                print(f"Retrying summarize... {retry_state.attempt_number}")
-                if retry_state.attempt_number > 1
-                else None
-            ),
-            reraise=True,
-        )
-        def _summarize_with_retry():
+        def _summarize_with_retry(selected_model: str):
             resp = self.http_client.post(
                 self.url,
                 data={
-                    "model": self.model,
-                    "prompt": self.prompt(content),
+                    "model": selected_model,
+                    "prompt": self.prompt(content, selected_model),
                     # "temperature": 0.7,
                     # "max_new_tokens": 2000,
                     # "top_p": 1,
@@ -75,6 +69,26 @@ class Summarizer:
                 raise Exception(f"Choices are empty in response: {resp}")
             if "text" not in resp["choices"][0]:
                 raise Exception(f"Text is not present in response.Choices: {resp}")
+
             return resp["choices"][0]["text"]
 
-        return _summarize_with_retry()
+        try:
+            for attempt in Retrying(
+                stop=stop_after_attempt(3),
+                wait=wait_exponential(multiplier=1, min=4, max=15),
+                before=lambda retry_state: (
+                    print(f"Retrying summarize... {retry_state.attempt_number}")
+                    if retry_state.attempt_number > 1
+                    else None
+                ),
+                reraise=True,
+            ):
+                model_index = attempt.retry_state.attempt_number - 1
+                selected_model = self.models[model_index]
+                print(f"Summarizing with {selected_model}")
+                with attempt:
+                    # raise Exception("My code is failing!")
+                    return _summarize_with_retry(selected_model)
+        except RetryError as e:
+            raise e
+        raise Exception("Failed to summarize news")
