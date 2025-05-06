@@ -1,7 +1,8 @@
 import datetime
+from time import sleep
 
 from jinja2 import BaseLoader, Environment
-from tenacity import RetryError, Retrying, retry, stop_after_attempt, wait_exponential
+from tenacity import RetryError, Retrying, stop_after_attempt, wait_exponential
 
 from src.python.httpclient import HttpClient
 
@@ -15,9 +16,9 @@ class Summarizer:
     ) -> None:
         self.url = "https://openrouter.ai/api/v1/completions"
         self.models = [
+            "google/gemma-3-27b-it:free",
             "google/gemini-2.0-flash-exp:free",
             "deepseek/deepseek-r1:free",
-            "google/gemma-3-27b-it:free",
         ]
         self.api_token = api_token
         self.http_client = http_client
@@ -38,6 +39,7 @@ class Summarizer:
 
     def summarize(self, content: str) -> str:
         def _summarize_with_retry(selected_model: str):
+            print(f"Summarizing with {selected_model}...")
             resp = self.http_client.post(
                 self.url,
                 data={
@@ -85,10 +87,10 @@ class Summarizer:
             ):
                 model_index = attempt.retry_state.attempt_number - 1
                 selected_model = self.models[model_index]
-                print(f"Summarizing with {selected_model}")
                 with attempt:
                     # raise Exception("My code is failing!")
                     return _summarize_with_retry(selected_model)
         except RetryError as e:
+            print(f"Failed to summarize news: {e}")
             raise e
         raise Exception("Failed to summarize news")
