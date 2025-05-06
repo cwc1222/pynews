@@ -16,8 +16,8 @@ class Summarizer:
     ) -> None:
         self.url = "https://openrouter.ai/api/v1/completions"
         self.models = [
-            "google/gemma-3-27b-it:free",
             "google/gemini-2.0-flash-exp:free",
+            "google/gemma-3-27b-it:free",
             "deepseek/deepseek-r1:free",
         ]
         self.api_token = api_token
