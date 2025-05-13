@@ -1,10 +1,7 @@
 import datetime
 import json
 import re
-import urllib.parse
 from dataclasses import dataclass
-
-import requests
 
 from src.python.httpclient import HttpClient
 from src.python.newsfetcher.newsfetcher import News, NewsFetcher
@@ -85,7 +82,8 @@ class ABCColorNewsFetcher(NewsFetcher):
                 uri="/policiales/",
             ),
             # d=2197,
-            d=2202,
+            # d=2202,
+            d=2207,  # 2025-05-13
             mxId=00000000,
             _website="abccolor",
         )
@@ -102,6 +100,8 @@ class ABCColorNewsFetcher(NewsFetcher):
                 url=f"{self.base_url}{item["website_url"]}",
                 author=", ".join(
                     [self.clean_author(str(a["name"])) for a in item["credits"]["by"]]
+                    if "credits" in item and "by" in item["credits"]
+                    else {"name": "ABC Color"}
                 ),
                 content="\n".join(
                     [

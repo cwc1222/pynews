@@ -1,5 +1,4 @@
 import datetime
-from time import sleep
 
 from jinja2 import BaseLoader, Environment
 from tenacity import RetryError, Retrying, stop_after_attempt, wait_exponential
@@ -56,7 +55,7 @@ class Summarizer:
                     "Authorization": f"Bearer {self.api_token}",
                     "Content-Type": "application/json",
                     "HTTP-Referer": "https://pynews.chenantunez.com",
-                    "X-Title": "pynews",
+                    "X-Title": "pynews.chenantunez.com",
                 },
             ).json()
             if (
