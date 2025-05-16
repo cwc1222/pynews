@@ -75,15 +75,16 @@ class ABCColorNewsFetcher(NewsFetcher):
             query=QueryABCColor(
                 arc_site="abccolor",
                 excludedSections="",
-                id="/policiales",
+                id="/politica",
                 limit="10",
                 offset="0",
                 sort="display_date:desc",
-                uri="/policiales/",
+                uri="/politica/",
             ),
             # d=2197,
             # d=2202,
-            d=2207,  # 2025-05-13
+            # d=2207,  # 2025-05-13
+            d=2209,  # 2025-05-16
             mxId=00000000,
             _website="abccolor",
         )
