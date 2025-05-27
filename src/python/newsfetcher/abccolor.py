@@ -84,7 +84,8 @@ class ABCColorNewsFetcher(NewsFetcher):
             # d=2197,
             # d=2202,
             # d=2207,  # 2025-05-13
-            d=2209,  # 2025-05-16
+            # d=2209,  # 2025-05-16
+            d=2224,  # 2025-05-27
             mxId=00000000,
             _website="abccolor",
         )
