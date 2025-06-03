@@ -76,7 +76,8 @@ class LaNacionNewsFetcher(NewsFetcher):
                 feedSize="10",
                 website="lanacionpy",
             ),
-            d=681,
+            # d=681,
+            d=682,  # 2025-06-03
             _website="lanacionpy",
         )
         resp = self.http_client.get(
